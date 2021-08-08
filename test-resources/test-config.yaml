@@ -1,0 +1,25 @@
+authentication:
+  token: token
+  username: my_username
+me:
+  username: me
+  dir: /home/user/repositories/me
+  clone_archived: false
+users:
+  - username: username
+    dir: /home/user/repositories/username
+    clone_archived: false
+teams:
+  - teamname: teamname
+    prefix: remove_prefix
+    dir: /home/user/repositories/teamname
+    org: organization
+    clone_archived: false
+    additional_repos:
+      - some_repo
+  - teamname: another_teamname
+    dir: /home/user/repositories/another_teamname
+    org: organization
+    clone_archived: true
+
+

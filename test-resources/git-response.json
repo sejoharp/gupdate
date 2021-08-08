@@ -1,0 +1,12 @@
+[
+  {
+    "name": "test_repo_1",
+    "full_name": "test_user/test_repo_1",
+    "ssh_url": "git@github.com:test_user/test_repo_1.git"
+  },
+  {
+    "name": "test_repo_2",
+    "full_name": "test_user/test_repo_2",
+    "ssh_url": "git@github.com:test_user/test_repo_2.git"
+  }
+]
