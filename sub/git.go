@@ -85,16 +85,25 @@ func ParseTeamsJson(input string) []OrgTeam {
 	return inventory
 }
 
-func UpdateRepository(repository Repository, removePrefix string, directory string, c chan Result, wg *sync.WaitGroup, p chan int) {
+func UpdateRepository(verbose bool, repository Repository, removePrefix string, directory string, c chan Result, wg *sync.WaitGroup, p chan int) {
 	defer wg.Done()
+	if verbose {
+		fmt.Println("--> " + repository.Name)
+	}
 	nameWithoutPrefix := strings.ReplaceAll(repository.Name, removePrefix, "")
 	repoPath := directory + "/" + nameWithoutPrefix
 	if repository.Archived {
+		if verbose {
+			fmt.Println("Archived " + repository.Name)
+		}
 		if DoesDirectoryExist(repoPath) {
 			c <- LocalArchived{Name: nameWithoutPrefix, Message: repoPath}
 		}
 	} else {
 		if DoesDirectoryExist(repoPath) {
+			if verbose {
+				fmt.Println("Pulling " + repository.Name)
+			}
 			_, err := GitPull(repoPath)
 			if err != nil {
 				c <- Error{Name: nameWithoutPrefix, Message: fmt.Sprintf("%s - %s", repoPath, err.Error())}
@@ -102,6 +111,9 @@ func UpdateRepository(repository Repository, removePrefix string, directory stri
 				c <- Pulled{Name: nameWithoutPrefix, Message: repoPath}
 			}
 		} else {
+			if verbose {
+				fmt.Println("Cloning " + repository.Name)
+			}
 			_, err := GitClone(repository, directory, nameWithoutPrefix)
 			if err != nil {
 				c <- Error{Name: nameWithoutPrefix, Message: fmt.Sprintf("%s - %s", repoPath, err.Error())}
@@ -122,12 +134,12 @@ func (t *Team) ShouldBeUpdated(repository Repository) bool {
 	return Find(t.AdditionalRepos, repository.Name) || (strings.HasPrefix(repository.Name, t.Prefix))
 }
 
-func UpdateRepositories(repositories []Repository, condition func(Repository) bool, removePrefix, dir string, wg *sync.WaitGroup, c chan Result, p chan int) {
+func UpdateRepositories(verbose bool, repositories []Repository, condition func(Repository) bool, removePrefix, dir string, wg *sync.WaitGroup, c chan Result, p chan int) {
 	for _, r := range repositories {
 		if condition(r) {
 			p <- 1
 			wg.Add(1)
-			go UpdateRepository(r, removePrefix, dir, c, wg, p)
+			go UpdateRepository(verbose, r, removePrefix, dir, c, wg, p)
 		}
 	}
 }

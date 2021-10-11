@@ -21,9 +21,11 @@ func CreateDirectory(path string) {
 }
 
 var configPath string
+var Verbose bool
 
 func init() {
 	rootCmd.PersistentFlags().StringVarP(&configPath, "config", "c", "$HOME/.gupdate.yaml", "path to config file")
+	rootCmd.PersistentFlags().BoolVarP(&Verbose, "verbose", "v", false, "enable verbose logging")
 }
 
 func fillEnvVariables(input string) string {
@@ -60,19 +62,19 @@ var rootCmd = &cobra.Command{
 
 		CreateDirectory(c.Me.Directory)
 		repos := c.Me.ListRepositories(auth, true)
-		sub.UpdateRepositories(repos, c.Me.ShouldBeUpdated, "", c.Me.Directory, &wg, resultChan, parallelityChan)
+		sub.UpdateRepositories(Verbose, repos, c.Me.ShouldBeUpdated, "", c.Me.Directory, &wg, resultChan, parallelityChan)
 
 		for _, s := range c.Users {
 			CreateDirectory(s.Directory)
 			repos := s.ListRepositories(auth, false)
-			sub.UpdateRepositories(repos, s.ShouldBeUpdated, "", s.Directory, &wg, resultChan, parallelityChan)
+			sub.UpdateRepositories(Verbose, repos, s.ShouldBeUpdated, "", s.Directory, &wg, resultChan, parallelityChan)
 		}
 
 		for _, t := range c.Teams {
 			CreateDirectory(t.Dir)
 			var emptyList []sub.Repository
 			repos := t.ListRepositories(auth, emptyList, 1)
-			sub.UpdateRepositories(repos, t.ShouldBeUpdated, t.Prefix, t.Dir, &wg, resultChan, parallelityChan)
+			sub.UpdateRepositories(Verbose, repos, t.ShouldBeUpdated, t.Prefix, t.Dir, &wg, resultChan, parallelityChan)
 		}
 		wg.Wait()
 		input := []sub.Result{}
