@@ -11,6 +11,7 @@
         * [Compile from source](#compile-from-source)
   * [Usage](#usage)
      * [Configuration](#configuration)
+        * [Authentication](#authentication)
   * [Roadmap](#roadmap)
   * [Contributing](#contributing)
   * [License](#license)
@@ -89,9 +90,14 @@ teams:
     dir: /home/user/repositories/teamname   # repos location
     org: organization                       # org for the team
     clone_archived: false                   # should archived repos be cloned?
-    additional_repos:                       # repos that do not belong to the team, but you have read access to
-      - some_repo
 ```
+
+#### Authentication
+
+Authentication is done via a github-access-token. This token can be provided in three differeny ways:
+* token: <plain text token>
+* token_file: <path to a file containing the token>
+* token_env_variable: <env variable containing the token>
 
 ## Roadmap
 
