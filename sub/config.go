@@ -57,7 +57,7 @@ func (c *Config) ToAuthentication() ValidAuthentication {
 		if err != nil {
 			log.Fatal(err)
 		}
-		token = string(content)
+		token = strings.TrimSuffix(string(content), "\n")
 	} else if c.Authentication.TokenVariable != "" {
 		token = os.Getenv(c.Authentication.TokenVariable)
 	} else if c.Authentication.Token != "" {
