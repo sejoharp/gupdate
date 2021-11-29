@@ -15,8 +15,6 @@ teams:
     dir: /home/user/repositories/teamname
     org: organization
     clone_archived: false
-    additional_repos:
-      - some_repo
   - teamname: another_teamname
     dir: /home/user/repositories/another_teamname
     org: organization

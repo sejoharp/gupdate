@@ -13,12 +13,11 @@ func TestParseConfig(t *testing.T) {
 		Me:             User{Username: "me", Directory: "/home/user/repositories/me", CloneArchived: false},
 		Users:          []User{{Username: "username", Directory: "/home/user/repositories/username", CloneArchived: false}},
 		Teams: []Team{{
-			Teamname:        "teamname",
-			Prefix:          "remove_prefix",
-			Dir:             "/home/user/repositories/teamname",
-			Org:             "organization",
-			CloneArchived:   false,
-			AdditionalRepos: []string{"some_repo"},
+			Teamname:      "teamname",
+			Prefix:        "remove_prefix",
+			Dir:           "/home/user/repositories/teamname",
+			Org:           "organization",
+			CloneArchived: false,
 		}, {
 			Teamname:      "another_teamname",
 			Prefix:        "",

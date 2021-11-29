@@ -131,7 +131,7 @@ func (u *User) ShouldBeUpdated(repository Repository) bool {
 }
 
 func (t *Team) ShouldBeUpdated(repository Repository) bool {
-	return Find(t.AdditionalRepos, repository.Name) || (strings.HasPrefix(repository.Name, t.Prefix))
+	return strings.HasPrefix(repository.Name, t.Prefix)
 }
 
 func UpdateRepositories(verbose bool, repositories []Repository, condition func(Repository) bool, removePrefix, dir string, wg *sync.WaitGroup, c chan Result, p chan int) {

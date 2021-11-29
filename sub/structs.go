@@ -20,12 +20,11 @@ type User struct {
 	Private       bool   `yaml:"private"`
 }
 type Team struct {
-	Teamname        string   `yaml:"teamname"`
-	Prefix          string   `yaml:"prefix"`
-	Dir             string   `yaml:"dir"`
-	Org             string   `yaml:"org"`
-	CloneArchived   bool     `yaml:"clone_archived"`
-	AdditionalRepos []string `yaml:"additional_repos"`
+	Teamname      string `yaml:"teamname"`
+	Prefix        string `yaml:"prefix"`
+	Dir           string `yaml:"dir"`
+	Org           string `yaml:"org"`
+	CloneArchived bool   `yaml:"clone_archived"`
 }
 type Authentication struct {
 	Username      string `yaml:"username"`
