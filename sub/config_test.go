@@ -9,7 +9,7 @@ func TestParseConfig(t *testing.T) {
 	config := Config{}
 	config.GetConf("../test-resources/test-config.yaml")
 	expected := Config{
-		Authentication: Authentication{Username: "my_username", Token: "token"},
+		Authentication: Authentication{Token: "token"},
 		Me:             User{Username: "me", Directory: "/home/user/repositories/me", CloneArchived: false},
 		Users:          []User{{Username: "username", Directory: "/home/user/repositories/username", CloneArchived: false}},
 		Teams: []Team{{

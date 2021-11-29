@@ -1,6 +1,5 @@
 authentication:
   token: token
-  username: my_username
 me:
   username: me
   dir: /home/user/repositories/me

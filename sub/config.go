@@ -65,7 +65,7 @@ func (c *Config) ToAuthentication() ValidAuthentication {
 	}
 
 	return ValidAuthentication{
-		Username: c.Authentication.Username,
+		Username: c.Me.Username,
 		Token:    token,
 	}
 }
