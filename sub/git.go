@@ -131,6 +131,7 @@ func (u *User) ShouldBeUpdated(repository Repository) bool {
 }
 
 func (t *Team) ShouldBeUpdated(repository Repository) bool {
+	// FIXME what about clone archived?
 	return strings.HasPrefix(repository.Name, t.Prefix)
 }
 

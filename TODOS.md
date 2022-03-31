@@ -1,10 +1,11 @@
+# ToDos
+
+* remove me: users teams and authentication
 * beautiful logging
-* check if me is there
-* document token 
+* check for minimal config
+* document token
 * clone archived default
-* users teams and authentications
-* pull other repos in directory
-* improve check for minimal config
+* pull other repos in directory if is git repo
 * allow env variables in config-dirs etc
 
 * debug logging
