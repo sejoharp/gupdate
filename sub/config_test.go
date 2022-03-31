@@ -35,7 +35,7 @@ func TestHeader(t *testing.T) {
 	config := Config{}
 	config.GetConf("../test-resources/test-config.yaml")
 	got := config.Header()
-	expected := "Updating me, username, teamname and another_teamname..."
+	expected := "Updating me, username, teamname and another_teamname ..."
 	if got != expected {
 		t.Errorf("Header is not equal. Got %v, wanted %v", got, expected)
 	}

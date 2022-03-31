@@ -40,7 +40,11 @@ func (c *Config) Header() string {
 		names = append(names, t.Teamname)
 	}
 
-	return fmt.Sprintf("Updating %s and %s...", strings.Join(names[:len(names)-1], ", "), names[len(names)-1])
+	if len(names) == 1 {
+		return fmt.Sprintf("Updating %s ...", names[0])
+	} else {
+		return fmt.Sprintf("Updating %s and %s ...", strings.Join(names[:len(names)-1], ", "), names[len(names)-1])
+	}
 }
 
 func (c *Config) HasMinimalFields() (bool, error) {
