@@ -27,7 +27,6 @@ type Team struct {
 	CloneArchived bool   `yaml:"clone_archived"`
 }
 type Authentication struct {
-	Username      string `yaml:"username"`
 	Token         string `yaml:"token"`
 	TokenVariable string `yaml:"token_env_variable"`
 	TokenFile     string `yaml:"token_file"`
