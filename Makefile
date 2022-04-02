@@ -15,6 +15,9 @@ build-linux-amd64: ## Build binary
 build-darwin-amd64: ## Build binary
 	env GOOS=darwin GOARCH=amd64 go build -ldflags "-s -w" -o $(binary)-darwin-amd64
 
+build-darwin-arm64: ## Build binary
+	env GOOS=darwin GOARCH=arm64 go build -ldflags "-s -w" -o $(binary)-darwin-arm64
+
 build-windows-amd64: ## Build binary
 	env GOOS=windows GOARCH=amd64 go build -ldflags "-s -w" -o $(binary)-windows-amd64
 
