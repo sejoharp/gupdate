@@ -34,7 +34,7 @@ func (t *Team) GetRepositoryUrl(auth ValidAuthentication, page int) (string, err
 	url := "https://api.github.com/orgs/" + t.Org + "/teams?per_page=100" + "&page=" + strconv.Itoa(page)
 	bodyString, err := request(url, auth)
 	if err != nil {
-		fmt.Println("get repository url error:" + err.Error())
+		log.Printf("get repository url error: %s", err.Error())
 	}
 	teams := ParseTeamsJson(bodyString)
 
@@ -53,7 +53,7 @@ func request(url string, auth ValidAuthentication) (string, error) {
 	client := &http.Client{}
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
-		fmt.Println("error")
+		log.Printf("request with url %s failed with error: %s", url, err.Error())
 	}
 	req.Header.Add("Authorization", "Basic "+basicAuth(auth.Username, auth.Token))
 	resp, err := client.Do(req)
