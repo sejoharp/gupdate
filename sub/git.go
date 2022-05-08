@@ -3,6 +3,7 @@ package sub
 import (
 	"encoding/base64"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"log"
@@ -28,17 +29,24 @@ func (u *User) ListRepositories(auth ValidAuthentication, me bool) []Repository 
 	repos := ParseJson(bodyString)
 	return repos
 }
-func (t *Team) GetRepositoryUrl(auth ValidAuthentication) string { // TODO return err
-	url := "https://api.github.com/orgs/" + t.Org + "/teams?per_page=100" // TODO paging
-	bodyString, _ := request(url, auth)
+
+func (t *Team) GetRepositoryUrl(auth ValidAuthentication, page int) (string, error) {
+	url := "https://api.github.com/orgs/" + t.Org + "/teams?per_page=100" + "&page=" + strconv.Itoa(page)
+	bodyString, err := request(url, auth)
+	if err != nil {
+		fmt.Println("get repository url error:" + err.Error())
+	}
 	teams := ParseTeamsJson(bodyString)
 
 	for _, tt := range teams {
 		if tt.Name == t.Teamname {
-			return tt.RepositoriesUrl
+			return tt.RepositoriesUrl, nil
 		}
 	}
-	return ""
+	if len(teams) == 100 {
+		return t.GetRepositoryUrl(auth, page+1)
+	}
+	return "", errors.New("team:[" + t.Teamname + "] not found.")
 }
 
 func request(url string, auth ValidAuthentication) (string, error) {
@@ -49,13 +57,19 @@ func request(url string, auth ValidAuthentication) (string, error) {
 	}
 	req.Header.Add("Authorization", "Basic "+basicAuth(auth.Username, auth.Token))
 	resp, err := client.Do(req)
+	if err != nil {
+		log.Printf("request error with url %s: error message: %s", url, err.Error())
+	}
 	defer resp.Body.Close()
 	body, err := io.ReadAll(resp.Body)
 	bodyString := string(body)
 	return bodyString, nil
 }
 func (t *Team) ListRepositories(auth ValidAuthentication, repos []Repository, page int) []Repository { // TODO Paging
-	repositoryUrl := t.GetRepositoryUrl(auth)
+	repositoryUrl, err := t.GetRepositoryUrl(auth, 1)
+	if err != nil {
+		log.Fatal(err)
+	}
 	bodyString, _ := request(repositoryUrl+"?page="+strconv.Itoa(page)+"&per_page=100", auth)
 	newRepos := ParseJson(bodyString)
 	c := append(repos, newRepos...)
