@@ -27,10 +27,10 @@ jobs:
 
       - name: Build Go binary
         run: |
-          GOARCH=${{ matrix.architecture }} GOOS=darwin go build -ldflags "-s -w" -o gupdate-darwin-$GOARCH  # Replace 'gupdate.go' with your main Go file
+          GOARCH=${{ matrix.architecture }} GOOS=darwin go build -ldflags "-s -w" -o gupdate-darwin-${{ matrix.architecture }}  # Replace 'gupdate.go' with your main Go file
 
       - name: Upload binary
         uses: actions/upload-artifact@v4
         with:
-          name: gupdate-${{ matrix.architecture }}
-          path: gupdate-${{ matrix.architecture }}
+          name: gupdate-darwin-${{ matrix.architecture }}
+          path: gupdate-darwin-${{ matrix.architecture }}
