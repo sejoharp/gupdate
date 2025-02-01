@@ -2,20 +2,25 @@
 
 > sync github repositories from different users and teams
 
+<!-- TOC -->
+* [gupdate](#gupdate)
   * [About The Project](#about-the-project)
-     * [Built With](#built-with)
+    * [Built With](#built-with)
   * [Getting Started](#getting-started)
-     * [Example](#example)
-     * [Prerequisites](#prerequisites)
-     * [Installation](#installation)
-        * [Compile from source](#compile-from-source)
+    * [Example](#example)
+    * [Prerequisites](#prerequisites)
+    * [Installation](#installation)
+      * [use release](#use-release)
+      * [Compile from source](#compile-from-source)
   * [Usage](#usage)
-     * [Configuration](#configuration)
-        * [Authentication](#authentication)
+    * [Configuration](#configuration)
+      * [Authentication](#authentication)
   * [Roadmap](#roadmap)
   * [Contributing](#contributing)
   * [License](#license)
   * [Contact](#contact)
+<!-- TOC -->
+
 
 ## About The Project
 
