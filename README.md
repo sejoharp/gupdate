@@ -52,6 +52,14 @@ In order to use `gupdate`, you need:
 
 ### Installation
 
+#### use release
+1. download the latest release
+2. make it executable
+   ```bash
+   chmod +x gupdate
+   ```
+
+
 #### Compile from source
 
 1. Clone the repo
