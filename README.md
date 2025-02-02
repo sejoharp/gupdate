@@ -2,20 +2,26 @@
 
 > sync github repositories from different users and teams
 
+<!-- TOC -->
+* [gupdate](#gupdate)
   * [About The Project](#about-the-project)
-     * [Built With](#built-with)
+    * [Built With](#built-with)
   * [Getting Started](#getting-started)
-     * [Example](#example)
-     * [Prerequisites](#prerequisites)
-     * [Installation](#installation)
-        * [Compile from source](#compile-from-source)
+    * [Example](#example)
+    * [Installation](#installation)
+      * [use release](#use-release)
+      * [Compile from source](#compile-from-source)
+        * [Prerequisites](#prerequisites)
+        * [create binary](#create-binary)
   * [Usage](#usage)
-     * [Configuration](#configuration)
-        * [Authentication](#authentication)
+    * [Configuration](#configuration)
+      * [Authentication](#authentication)
   * [Roadmap](#roadmap)
   * [Contributing](#contributing)
   * [License](#license)
   * [Contact](#contact)
+<!-- TOC -->
+
 
 ## About The Project
 
@@ -43,17 +49,22 @@ Errors happened in these repositories:
 Pulled 132 repositories.
 ```
 
-### Prerequisites
+### Installation
+
+#### use release
+```bash
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/sejoharp/gupdate/refs/heads/main/install.sh)"
+```
+
+#### Compile from source
+##### Prerequisites
 
 In order to use `gupdate`, you need:
 
 * git installed
 * github access token (used for pulling/cloning)
 
-### Installation
-
-#### Compile from source
-
+##### create binary
 1. Clone the repo
    ```bash
    git clone https://github.com/fr3dch3n/gupdate.git
