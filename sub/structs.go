@@ -13,6 +13,12 @@ type OrgTeam struct {
 	RepositoriesUrl string `json:"repositories_url"`
 }
 
+type Organization struct {
+	Name          string `yaml:"name"`
+	Dir           string `yaml:"dir"`
+	CloneArchived bool   `yaml:"clone_archived"`
+}
+
 type User struct {
 	Username      string `yaml:"username"`
 	Directory     string `yaml:"dir"`
