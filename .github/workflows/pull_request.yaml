@@ -1,9 +1,6 @@
-name: Build Go Binary
+name: Pull Request
 
 on:
-  push:
-    branches:
-      - main
   pull_request:
     branches:
       - main
@@ -29,11 +26,3 @@ jobs:
       - name: Build Go binary
         run: |
           GOARCH=${{ matrix.architecture }} GOOS=${{ matrix.os }} go build -ldflags "-s -w" -o gupdate-${{ matrix.os }}-${{ matrix.architecture }}
-
-      - name: Upload binary
-        uses: softprops/action-gh-release@v2
-        with:
-          files: gupdate-${{ matrix.os }}-${{ matrix.architecture }}
-          tag_name: v1.0.${{ github.run_number }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
