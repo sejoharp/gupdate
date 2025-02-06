@@ -12,11 +12,6 @@ jobs:
   build:
     runs-on: macos-latest
 
-    strategy:
-      matrix:
-        architecture: [ amd64, arm64 ]
-        os: [ linux, darwin ]
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -26,14 +21,20 @@ jobs:
         with:
           go-version: '1.23'  # Specify the Go version you want to use
 
-      - name: Build Go binary
-        run: |
-          GOARCH=${{ matrix.architecture }} GOOS=${{ matrix.os }} go build -ldflags "-s -w" -o gupdate-${{ matrix.os }}-${{ matrix.architecture }}
+      - name: execute tests
+        run: go test ./...
 
-      - name: Upload binary
+      - name: Build Go binaries
+        run: |
+          GOARCH=amd64 GOOS=linux go build -ldflags "-s -w" -o gupdate-linux-amd64
+          GOARCH=arm64 GOOS=linux go build -ldflags "-s -w" -o gupdate-linux-arm64
+          GOARCH=amd64 GOOS=darwin go build -ldflags "-s -w" -o gupdate-darwin-amd64
+          GOARCH=arm64 GOOS=darwin go build -ldflags "-s -w" -o gupdate-darwin-arm64
+
+      - name: Upload binary and build release
         uses: softprops/action-gh-release@v2
         with:
-          files: gupdate-${{ matrix.os }}-${{ matrix.architecture }}
+          files: gupdate-*
           tag_name: v1.0.${{ github.run_number }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
