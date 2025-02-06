@@ -79,6 +79,14 @@ func execute(cmd *cobra.Command, args []string) {
 		repos := t.ListRepositories(auth, emptyList, 1)
 		sub.UpdateRepositories(Verbose, repos, t.ShouldBeUpdated, t.Prefix, t.Dir, &wg, resultChan, parallelityChan)
 	}
+
+	for _, o := range c.Organizations {
+		CreateDirectory(o.Dir)
+		var emptyList []sub.Repository
+		repos := o.ListRepositories(auth, emptyList, 1)
+		sub.UpdateRepositories(Verbose, repos, o.ShouldBeUpdated, "", o.Dir, &wg, resultChan, parallelityChan)
+	}
+
 	wg.Wait()
 	input := []sub.Result{}
 	close(resultChan)

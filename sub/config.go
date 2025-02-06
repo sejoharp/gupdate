@@ -16,6 +16,7 @@ type Config struct {
 	Me             User           `yaml:"me"`
 	Users          []User         `yaml:"users"`
 	Teams          []Team         `yaml:"teams"`
+	Organizations  []Organization `yaml:"organizations"`
 }
 
 func (c *Config) GetConf(path string) *Config {
@@ -38,6 +39,9 @@ func (c *Config) Header() string {
 	}
 	for _, t := range c.Teams {
 		names = append(names, t.Teamname)
+	}
+	for _, o := range c.Organizations {
+		names = append(names, o.Name)
 	}
 
 	if len(names) == 1 {

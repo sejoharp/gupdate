@@ -81,6 +81,17 @@ func (t *Team) ListRepositories(auth ValidAuthentication, repos []Repository, pa
 	return c
 }
 
+func (o *Organization) ListRepositories(auth ValidAuthentication, repos []Repository, page int) []Repository {
+	url := "https://api.github.com/orgs/" + o.Name + "/repos?per_page=100"
+	bodyString, _ := request(url+"&page="+strconv.Itoa(page), auth)
+	newRepos := ParseJson(bodyString)
+	c := append(repos, newRepos...)
+	if len(newRepos) == 100 {
+		return o.ListRepositories(auth, c, page+1)
+	}
+	return c
+}
+
 func ParseJson(input string) []Repository {
 	var inventory []Repository
 	if err := json.Unmarshal([]byte(input), &inventory); err != nil {
@@ -142,6 +153,10 @@ func UpdateRepository(verbose bool, repository Repository, removePrefix string, 
 func (u *User) ShouldBeUpdated(repository Repository) bool {
 	return strings.HasPrefix(repository.FullName, u.Username) &&
 		((u.CloneArchived && repository.Archived) || (!repository.Archived))
+}
+
+func (o *Organization) ShouldBeUpdated(repository Repository) bool {
+	return (o.CloneArchived && repository.Archived) || (!repository.Archived)
 }
 
 func (t *Team) ShouldBeUpdated(repository Repository) bool {

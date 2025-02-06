@@ -101,6 +101,10 @@ teams:
     dir: /home/user/repositories/teamname   # repos location
     org: organization                       # org for the team
     clone_archived: false                   # should archived repos be cloned?
+organizations:
+  - name: orgname                           # organization to clone repos from
+    dir: /home/user/repositories/orgname    # repos location
+    clone_archived: false                   # should archived repos be cloned?
 ```
 
 #### Authentication
