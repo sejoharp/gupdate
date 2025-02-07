@@ -59,5 +59,32 @@ quick-cover: ## Run simple coverage
 fmt: ## Format source-tree
 	gofmt -l -s -w .
 
+CURRENT_VERSION=$(shell git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
+MAJOR=$(shell echo $(CURRENT_VERSION) | sed 's/v//' | cut -d. -f1)
+MINOR=$(shell echo $(CURRENT_VERSION) | sed 's/v//' | cut -d. -f2)
+PATCH=$(shell echo $(CURRENT_VERSION) | sed 's/v//' | cut -d. -f3)
+
+NEXT_MAJOR=v$(shell expr $(MAJOR) + 1).0.0
+NEXT_MINOR=v$(MAJOR).$(shell expr $(MINOR) + 1).0
+NEXT_PATCH=v$(MAJOR).$(MINOR).$(shell expr $(PATCH) + 1)
+
+define release
+	@git tag -a $(1) -m "Release $(1)"
+	@git push origin $(1)
+	@echo "Released $(1)"
+endef
+
+.PHONY: major
+major:
+	$(call release,$(NEXT_MAJOR))
+
+.PHONY: minor
+minor:
+	$(call release,$(NEXT_MINOR))
+
+.PHONY: patch
+patch:
+	$(call release,$(NEXT_PATCH))
+
 help: ## Print all available make-commands
 	@grep -E '^[a-zA-Z0-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
