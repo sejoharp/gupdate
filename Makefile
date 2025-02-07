@@ -2,11 +2,30 @@ ifndef VERBOSE
 .SILENT:
 endif
 
+.DEFAULT_GOAL:= help
 binary="gupdate"
 
-.PHONY: run build
+.PHONY: install
+install: ## Install dependencies
+ifeq ($(CI),true)
+	$(info "Running in CI mode")
+else
+	pre-commit install
+	go mod download
+	go mod tidy
+	go mod verify
+endif
 
-run: debug-build ## Build and run binary without arguments
+.PHONY: pre-commit-install
+pre-commit-install: ## install pre-commit
+	pre-commit install
+
+.PHONY: pre-commit
+pre-commit: pre-commit-install ## run pre-commit
+	pre-commit run --all-files
+
+.PHONY: run
+run: install debug-build ## Build and run binary without arguments
 	./$(binary)
 
 .PHONY: build-linux-amd64
@@ -41,21 +60,27 @@ install-darwin-arm64: build-darwin-arm64 ## install to home bin directory
 install-windows-amd64: build-windows-amd64 ## install to home bin directory
 	mv $(binary)-windows-amd64 ~/bin/gupdate
 
+.PHONY: debug-build
 debug-build: ## Build binary
 	go build -o $(binary)
 
-test: ## Run tests
+.PHONY: test
+test: install ## Run tests
 	go test ./...
 
-dependencies:
+.PHONY: dependencies
+dependencies: ## Install dependencies
 	go get ./...
 
+.PHONY: cover
 cover: ## Run test-coverage and open in browser
 	go test -v -covermode=count -coverprofile=coverage.out ./... && go tool cover -html=coverage.out
 
+.PHONY: quick-cover
 quick-cover: ## Run simple coverage
 	go test -cover ./...
 
+.PHONY: fmt
 fmt: ## Format source-tree
 	gofmt -l -s -w .
 
@@ -86,5 +111,6 @@ minor:
 patch:
 	$(call release,$(NEXT_PATCH))
 
+.PHONY: help
 help: ## Print all available make-commands
 	@grep -E '^[a-zA-Z0-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
