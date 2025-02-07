@@ -1,22 +1,28 @@
 ---
 repos:
-    - repo: https://github.com/pre-commit/pre-commit-hooks
-      rev: v4.4.0
-      hooks:
-          - id: check-yaml
-          - id: end-of-file-fixer
-          - id: trailing-whitespace
-          - id: check-added-large-files
-    - repo: https://github.com/dnephin/pre-commit-golang
-      rev: v0.5.1
-      hooks:
-          - id: go-fmt
-          - id: go-vet
-          - id: go-imports
-          - id: go-unit-tests
-          - id: go-build
-          - id: go-mod-tidy
-    - repo: https://github.com/jumanjihouse/pre-commit-hook-yamlfmt
-      rev: 0.2.2
-      hooks:
-          - id: yamlfmt
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v4.4.0
+  hooks:
+  - id: check-yaml
+  - id: end-of-file-fixer
+  - id: trailing-whitespace
+  - id: check-added-large-files
+- repo: https://github.com/dnephin/pre-commit-golang
+  rev: v0.5.1
+  hooks:
+  - id: go-fmt
+  - id: go-vet
+  - id: go-imports
+  - id: go-unit-tests
+  - id: go-build
+  - id: go-mod-tidy
+- repo: https://github.com/adrienverge/yamllint.git
+  rev: v1.35.1
+  hooks:
+  - id: yamllint
+    args: ['-d {extends: relaxed, rules: {line-length: disable}}', -s]
+- repo: https://github.com/jumanjihouse/pre-commit-hook-yamlfmt
+  rev: 0.2.2
+  hooks:
+  - id: yamlfmt
+    args: [--mapping, '2', --sequence, '2', --offset, '0', --width, '150']
