@@ -1,3 +1,4 @@
+---
 name: Main
 
 on:
@@ -10,23 +11,25 @@ jobs:
 
     strategy:
       matrix:
-        architecture: [ amd64, arm64 ]
-        os: [ linux, darwin ]
+        architecture: [amd64, arm64]
+        os: [linux, darwin]
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      - name: Set up Go
-        uses: actions/setup-go@v5
-        with:
-          go-version: '1.23'
-      - name: Build Go binary
-        run: |
-          GOARCH=${{ matrix.architecture }} GOOS=${{ matrix.os }} go build -ldflags "-s -w" -o gupdate-${{ matrix.os }}-${{ matrix.architecture }}
-      - name: Upload binary
-        uses: softprops/action-gh-release@v2
-        with:
-          files: gupdate-${{ matrix.os }}-${{ matrix.architecture }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        if: startsWith(github.ref, 'refs/tags/')
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Set up Go
+      uses: actions/setup-go@v5
+      with:
+        go-version: '1.23'
+    - name: Build Go binary
+      run: |
+        GOARCH=${{ matrix.architecture }} GOOS=${{ matrix.os }} \
+          go build -ldflags "-s -w" \
+          -o gupdate-${{ matrix.os }}-${{ matrix.architecture }}
+    - name: Upload binary
+      uses: softprops/action-gh-release@v2
+      with:
+        files: gupdate-${{ matrix.os }}-${{ matrix.architecture }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      if: startsWith(github.ref, 'refs/tags/')

@@ -1,6 +1,6 @@
 # gupdate
 
-> sync github repositories from different users and teams
+> sync github repositories from different users, teams and organizations
 
 <!-- TOC -->
 * [gupdate](#gupdate)
@@ -78,14 +78,16 @@ In order to use `gupdate`, you need:
 
 ## Usage
 
-Put your configuration file in $HOME/gupdate.yaml or provide a specific path via `gupdate -c <path>`.
+Put your configuration file in $HOME/.gupdate.yaml or provide a specific path via `gupdate -c <path>`.
 
 ### Configuration
 
 The configuration has to follow this format:
 ```yaml
 authentication:
-  token: token                              # github access token
+  token: token                              # possibility 1; github access token
+  token_file: /path/to/token_file           # possibility 2; path to a file containing the token
+  token_env_variable: GITHUB_TOKEN          # possibility 3; env variable containing the token
   username: my_username                     # github_username for authentication
 me:
   username: me                              # your github username (probably the same as authentication.username)

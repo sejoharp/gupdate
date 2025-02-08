@@ -42,7 +42,7 @@ var rootCmd = &cobra.Command{
 	Use:   "gupdate",
 	Short: "gupdate keeps local git repositories up-to-date",
 	Long:  `long explanation`,
-	Run: execute,
+	Run:   execute,
 }
 
 func execute(cmd *cobra.Command, args []string) {
