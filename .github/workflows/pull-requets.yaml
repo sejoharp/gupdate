@@ -1,4 +1,4 @@
-name: Build Go Binary
+name: Validate pull request
 
 on:
   pull_request:
