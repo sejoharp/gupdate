@@ -1,7 +1,7 @@
 name: Build Go Binary
 
 on:
-  push:
+  pull_request:
     branches:
       - main
 
@@ -41,24 +41,3 @@ jobs:
       - name: Build Go binary
         run: |
           GOARCH=${{ matrix.architecture }} GOOS=${{ matrix.os }} go build -ldflags "-s -w" -o gupdate-${{ matrix.os }}-${{ matrix.architecture }}
-
-      - name: Upload binary for {{ matrix.architecture }} on {{ matrix.os }}
-        uses: actions/upload-artifact@v4
-        with:
-          name: artifacts-${{ matrix.os }}-${{ matrix.architecture }}
-          path: gupdate-${{ matrix.os }}-${{ matrix.architecture }}
-
-  release:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: download all cached binaries
-        uses: actions/download-artifact@v4
-
-      - name: release version
-        uses: softprops/action-gh-release@v2
-        with:
-          files: artifacts-*/gupdate-*
-          tag_name: v1.0.${{ github.run_number }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
