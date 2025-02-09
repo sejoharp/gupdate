@@ -58,9 +58,6 @@ jobs:
       - name: download all cached binaries
         uses: actions/download-artifact@v4
 
-      - name: list files
-        run: ls -Rhalt
-
       - name: release version
         uses: softprops/action-gh-release@v2
         with:
