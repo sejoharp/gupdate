@@ -25,6 +25,7 @@ jobs:
         run: go test -v ./...
 
   build:
+    needs: test
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -50,6 +51,7 @@ jobs:
           path: gupdate-${{ matrix.os }}-${{ matrix.architecture }}
 
   release:
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: download all cached binaries
