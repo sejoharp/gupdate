@@ -9,8 +9,8 @@ on:
       - main
 
 jobs:
-  build:
-    runs-on: macos-latest
+  test:
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
@@ -21,17 +21,43 @@ jobs:
         with:
           go-version: '1.23'  # Specify the Go version you want to use
 
-      - name: execute tests
-        run: go test ./...
+      - name: Run tests
+        run: go test -v ./...
 
-      - name: Build Go binaries
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        architecture: [ amd64, arm64 ]
+        os: [ linux, darwin ]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.23'  # Specify the Go version you want to use
+
+      - name: Build Go binary
         run: |
-          GOARCH=amd64 GOOS=linux go build -ldflags "-s -w" -o gupdate-linux-amd64
-          GOARCH=arm64 GOOS=linux go build -ldflags "-s -w" -o gupdate-linux-arm64
-          GOARCH=amd64 GOOS=darwin go build -ldflags "-s -w" -o gupdate-darwin-amd64
-          GOARCH=arm64 GOOS=darwin go build -ldflags "-s -w" -o gupdate-darwin-arm64
+          GOARCH=${{ matrix.architecture }} GOOS=${{ matrix.os }} go build -ldflags "-s -w" -o gupdate-${{ matrix.os }}-${{ matrix.architecture }}
 
-      - name: Upload binary and build release
+      - name: Upload binary for {{ matrix.architecture }} on {{ matrix.os }}
+        uses: actions/upload-artifact@v4
+        with:
+          path: gupdate-${{ matrix.os }}-${{ matrix.architecture }}
+
+  release:
+    - runs-on: ubuntu-latest
+      steps:
+      - name: download all cached binaries
+        uses: actions/download-artifact@v4
+        with:
+          pattern: gupdate-*
+
+      - name: release version
         uses: softprops/action-gh-release@v2
         with:
           files: gupdate-*
