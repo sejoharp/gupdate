@@ -50,8 +50,8 @@ jobs:
           path: gupdate-${{ matrix.os }}-${{ matrix.architecture }}
 
   release:
-    - runs-on: ubuntu-latest
-      steps:
+    runs-on: ubuntu-latest
+    steps:
       - name: download all cached binaries
         uses: actions/download-artifact@v4
         with:
