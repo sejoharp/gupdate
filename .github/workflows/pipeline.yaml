@@ -48,6 +48,7 @@ jobs:
       - name: Upload binary for {{ matrix.architecture }} on {{ matrix.os }}
         uses: actions/upload-artifact@v4
         with:
+          name: gupdate-${{ matrix.os }}-${{ matrix.architecture }}
           path: gupdate-${{ matrix.os }}-${{ matrix.architecture }}
 
   release:
